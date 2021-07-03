@@ -6,20 +6,24 @@ export const login = async (ctx) => {
   try {
     const { email, password } = ctx.request.body
 
-    const [user] = await prisma.user.findMany({
-      where: { email, password }
+    const user = await prisma.user.findUnique({
+      where: { email }
     })
 
+    const passwordEqual = await bcrypt.compare(password, user.password)
 
-    if (!user || password !== user.password) {
+
+    if (!user || !passwordEqual) {
       ctx.status = 404
       return
     }
+
     const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET)
     ctx.body = { user, token }
   } catch (error) {
     ctx.status = 500
     ctx.body = 'algo deu errado'
+    console.log(error)
     return null
   }
 }
@@ -41,6 +45,7 @@ export const create = async (ctx) => {
   try {
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(ctx.request.body.password, saltRounds)
+
     const user = await prisma.user.create({
       data: {
         name: ctx.request.body.name,
@@ -48,6 +53,7 @@ export const create = async (ctx) => {
         password: hashedPassword,
       }
     })
+
     ctx.body = user
   } catch (error) {
     ctx.status = 500
