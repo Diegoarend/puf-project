@@ -5,7 +5,7 @@ import * as users from './modules/users'
 export const router = new Router()
 
 //auth
-router.post('/login', users.login)
+router.get('/login', users.login)
 
 
 //users
