@@ -2,16 +2,16 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { prisma } from '~/data'
 
-export const login = async (ctx) => {
-  const [type, credentials] = ctx.request.headers.authorization.split(' ')
+import { decodeBasicToken } from './services'
 
-  if (type !== 'Basic') {
+export const login = async (ctx) => {
+  try {
+    const [email, password] = decodeBasicToken(ctx.request.headers.authorization)
+  } catch (error) {
     ctx.status = 400
+    console.log(error)
     return
   }
-
-  const [email, password] = Buffer.from(credentials, 'base64').toString().split(':')
-
 
   try {
 

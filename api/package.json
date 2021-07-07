@@ -7,6 +7,7 @@
   "scripts": {
     "prebuild": "rm -Rf ./dist",
     "build": "babel src --extensions \".js\" --ignore \"*.spec.js,*.test.js\" --out-dir dist --copy-files",
+    "test": "yarn jest",
     "dev": "nodemon --exec babel-node -- -r dotenv-safe/config  src/index.js"
   },
   "devDependencies": {
@@ -16,6 +17,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.14.5",
     "@babel/preset-env": "^7.14.5",
     "babel-plugin-module-resolver": "^4.1.0",
+    "jest": "^27.0.6",
     "nodemon": "^2.0.7"
   },
   "dependencies": {
