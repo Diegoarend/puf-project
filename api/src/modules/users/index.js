@@ -2,7 +2,15 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { prisma } from '~/data'
 
-import { decodeBasicToken } from './services'
+import { decodeBasicToken} from './services'
+
+const errorTypes= {
+  TokenTypeError: 400,
+  BadCredentialsError:400,
+  EncodedError:400
+
+
+}
 
 export const login = async (ctx) => {
   try {
@@ -30,6 +38,10 @@ export const login = async (ctx) => {
     const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET)
     ctx.body = { user, token }
   } catch (error) {
+    if (error.custom) {
+      ctx.status=400
+      return
+    }
     ctx.status = 500
     ctx.body = 'algo deu errado'
     console.log(error)

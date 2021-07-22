@@ -1,4 +1,4 @@
-import { decodeBasicToken } from './services'
+import { decodeBasicToken, TokenTypeError, EncodedError, BadCredentialsError } from './services'
 
 describe('User module', () => {
   it('should return credentials by basic authentication token', () => {
@@ -31,7 +31,7 @@ describe('User module', () => {
     expect(result).toThrowError('Wrong token type')
   })
 
-  it('should throw new error when credentials is not base64 encoded', () => {
+  it('should throw new error when credentials is not on correct format', () => {
     //prepare 
     const email = 'diego@codar.me'
     const password = '123456'
