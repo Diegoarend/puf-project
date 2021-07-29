@@ -1,9 +1,9 @@
 import { decodeBasicToken, TokenTypeError, EncodedError, BadCredentialsError } from './services'
 
-describe('User module', () => {
+describe('User services', () => {
   it('should return credentials by basic authentication token', () => {
     //prepare 
-    const email = 'diego@codar.me'
+    const email = 'diegoaw@codar.me'
     const password = '123456'
     const token = Buffer.from(`${email}:${password}`, 'utf8').toString('base64')
 
@@ -18,7 +18,7 @@ describe('User module', () => {
 
   it('should throw new error when token is not Basic type', () => {
     //prepare 
-    const email = 'diego@codar.me'
+    const email = 'diegoaw@codar.me'
     const password = '123456'
     const token = Buffer.from(`${email}:${password}`, 'utf8').toString('base64')
 
@@ -33,7 +33,7 @@ describe('User module', () => {
 
   it('should throw new error when credentials is not on correct format', () => {
     //prepare 
-    const email = 'diego@codar.me'
+    const email = 'diegoaw@codar.me'
     const password = '123456'
     const token = Buffer.from(`${email}${password}`, 'utf8').toString('base64')
 
@@ -49,7 +49,7 @@ describe('User module', () => {
 
   it('should throw new error when credentials is not base64 encoded', () => {
     //prepare 
-    const email = 'diego@codar.me'
+    const email = 'diegoaw@codar.me'
     const password = '123456'
     const token = `${email}:${password}`
 

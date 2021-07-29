@@ -4,33 +4,24 @@ import { prisma } from '~/data'
 
 import { decodeBasicToken} from './services'
 
-const errorTypes= {
-  TokenTypeError: 400,
-  BadCredentialsError:400,
-  EncodedError:400
-
-
-}
 
 export const login = async (ctx) => {
   try {
     const [email, password] = decodeBasicToken(ctx.request.headers.authorization)
-  } catch (error) {
-    ctx.status = 400
-    console.log(error)
-    return
-  }
-
-  try {
-
+  
     const user = await prisma.user.findUnique({
       where: { email }
     })
+    console.log(user)
+
+    if (!user ) {
+      ctx.status = 404
+      return
+    }
 
     const passwordEqual = await bcrypt.compare(password, user.password)
 
-
-    if (!user || !passwordEqual) {
+    if (!passwordEqual) {
       ctx.status = 404
       return
     }
